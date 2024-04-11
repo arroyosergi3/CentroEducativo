@@ -9,55 +9,39 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-import capitulo08.centroEducativo.entidades.Curso;
+import javax.persistence.EntityManager;
+import javax.persistence.Persistence;
+import javax.persistence.Query;
+
+import Principal.entities.Curso;
 
 public class ControladorCurso extends SuperControlador {
-
-	private static String nombreTabla = "centroeducativo.curso";
+	
+	private static EntityManager em =  Persistence.createEntityManagerFactory("CentroEducativo").createEntityManager();
+	
+	private static String nombreTabla = "curso";
 
 	
+	
 	public static Curso getPrimero() {
-		try {
-			return getEntidad(ConnectionManager.getConexion(),
-					"select * from " + nombreTabla + " order by id asc limit 1");
-
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		return null;
-
+		Query q  = em.createNativeQuery("Select min(id) from"  + nombreTabla);
+		int primerId = (int) q.getSingleResult();
+		Curso c = em.find(Curso.class, primerId);
+		return c;
 	}
 
 	public static Curso getUltimo() {
-		try {
-			return getEntidad(ConnectionManager.getConexion(),
-					"select * from " + nombreTabla + " order by id desc limit 1");
-
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return null;
+		Query q  = em.createNativeQuery("Select max(id) from"  + nombreTabla);
+		int primerId = (int) q.getSingleResult();
+		Curso c = em.find(Curso.class, primerId);
+		return c;
 	}
 
+	
 	public static Curso getFabricanteSiguienteAnterior(int id) {
-
-		if (id > getUltimo().getId()) {
-			return getPrimero();
-		} else if (id < getPrimero().getId()) {
-			return getUltimo();
-		}
-		
-		
-
-		try {
-
-			return getEntidad(ConnectionManager.getConexion(), "select * from centroeducativo.curso where id=" + id);
-
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 		return null;
+
+
 	}
 	
 	
@@ -80,42 +64,13 @@ public class ControladorCurso extends SuperControlador {
 	
 	public static List<Curso> getTodos(){
 		List<Curso> l = new ArrayList<Curso>();
-		try {
-			ResultSet rs =  ConnectionManager.getConexion().createStatement().executeQuery("select * from " + nombreTabla);
-			while(rs.next()) {
-				Curso o = getEntidadFromResulSet(rs);
-				l.add(o);
-			}
-			
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		
 		
 		
 		
 		return l;
 	}
-	
-	
-	
-	
-	
-	private static Curso getEntidadFromResulSet(ResultSet rs) throws SQLException {
-		Curso o = null;
 
-
-			o = new Curso();
-			o.setId(rs.getInt("id"));
-			o.setDescripcion(rs.getString("descripcion"));
-
-		
-		
-		return o;
-	}
-	
-
-	
 	
 	public static int insercion (Curso o, Connection conn) {
 		int nuevoId = SuperControlador.maxIdEnTabla("curso");

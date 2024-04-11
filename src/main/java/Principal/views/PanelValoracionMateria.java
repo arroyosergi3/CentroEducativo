@@ -2,13 +2,12 @@ package Principal.views;
 
 import javax.swing.JPanel;
 
-import capitulo08.centroEducativo.controladores.ControladorEstudiantes;
-import capitulo08.centroEducativo.controladores.ControladorMateria;
-import capitulo08.centroEducativo.controladores.ControladorProfesor;
-import capitulo08.centroEducativo.controladores.ControladorValoracionMateria;
-import capitulo08.centroEducativo.entidades.Estudiante;
-import capitulo08.centroEducativo.entidades.Materia;
-import capitulo08.centroEducativo.entidades.Profesor;
+import Principal.controllers.ControladorEstudiantes;
+import Principal.controllers.ControladorMateria;
+import Principal.controllers.ControladorProfesor;
+import Principal.entities.Estudiante;
+import Principal.entities.Materia;
+import Principal.entities.Profesor;
 
 import java.awt.BorderLayout;
 import javax.swing.JLabel;

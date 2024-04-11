@@ -3,6 +3,7 @@ package Principal;
 import java.awt.Menu;
 
 import javax.swing.JFrame;
+import javax.swing.JMenuBar;
 import javax.swing.JTabbedPane;
 
 import Principal.views.PanelCurso;
@@ -112,7 +113,7 @@ public class Principal extends JFrame{
 		 panelMateria = new PanelMateria();
 		 panelEstudiante = new PanelEstudiante();
 		 panelProfesor = new PanelProfesor();
-		 panelValoracionMateria = new PanelValoracionMateria();
+//		 panelValoracionMateria = new PanelValoracionMateria();
 		Menu menu = new Menu();
 		
 		panelTabbed.addTab("Cursos", panelCurso);
@@ -122,7 +123,7 @@ public class Principal extends JFrame{
 		panelTabbed.addTab("Valoración Materia", panelValoracionMateria);
 		
 		
-		this.setJMenuBar(menu);
+//		this.setJMenuBar(menu);
 		
 		panelTabbed.setSelectedIndex(0);
 		
