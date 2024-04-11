@@ -2,6 +2,7 @@ package Principal.views;
 
 import javax.swing.JPanel;
 
+import Principal.controllers.ControladorMateria;
 import Principal.entities.Estudiante;
 import Principal.entities.Materia;
 import Principal.entities.Profesor;
@@ -12,6 +13,8 @@ import javax.swing.JLabel;
 import java.awt.GridBagConstraints;
 import javax.swing.JComboBox;
 import java.awt.Insets;
+import java.util.List;
+
 import javax.swing.JButton;
 import javax.swing.JList;
 
@@ -182,5 +185,14 @@ public class PanelNotaJPA extends JPanel {
 		panel_2.add(listSeleccionados, gbc_listSeleccionados);
 
 	}
+	
+	private void cargarTodasMaterias() {
+		List<Materia> l = ControladorMateria.getTodos();
+		for (Materia o : l) {
+			jcbMateria.addItem(o);
+		}
+
+	}
+	
 
 }

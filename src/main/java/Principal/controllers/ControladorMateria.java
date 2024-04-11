@@ -9,11 +9,17 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-import capitulo08.centroEducativo.entidades.Materia;
+import javax.persistence.EntityManager;
+import javax.persistence.Persistence;
+
+import Principal.entities.Materia;
+
 
 public class ControladorMateria extends SuperControlador{
 
 private static String nombreTabla = "materia";
+private static EntityManager em =  Persistence.createEntityManagerFactory("CentroEducativo").createEntityManager();
+
 
 	
 	public static Materia getPrimero() {
@@ -174,17 +180,7 @@ private static String nombreTabla = "materia";
 	
 	public static List<Materia> getTodos(){
 		List<Materia> l = new ArrayList<Materia>();
-		try {
-			ResultSet rs =  ConnectionManager.getConexion().createStatement().executeQuery("select * from " + nombreTabla);
-			while(rs.next()) {
-				Materia o = getEntidadFromResulSet(rs);
-				l.add(o);
-			}
-			
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		
 		
 		
 		
