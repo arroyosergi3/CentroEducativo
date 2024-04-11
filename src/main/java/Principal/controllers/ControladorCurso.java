@@ -24,14 +24,14 @@ public class ControladorCurso extends SuperControlador {
 	
 	
 	public static Curso getPrimero() {
-		Query q  = em.createNativeQuery("Select min(id) from"  + nombreTabla);
+		Query q  = em.createNativeQuery("Select min(id) from "  + nombreTabla);
 		int primerId = (int) q.getSingleResult();
 		Curso c = em.find(Curso.class, primerId);
 		return c;
 	}
 
 	public static Curso getUltimo() {
-		Query q  = em.createNativeQuery("Select max(id) from"  + nombreTabla);
+		Query q  = em.createNativeQuery("Select max(id) from "  + nombreTabla);
 		int primerId = (int) q.getSingleResult();
 		Curso c = em.find(Curso.class, primerId);
 		return c;

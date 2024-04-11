@@ -1,13 +1,35 @@
 package Principal.entities;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+@Table(name="profesor")
 public class Profesor {
 	@Override
 	public String toString() {
 		return ( nombre + " "+ apellido_1 + " " + apellido_2 );
 	}
+	@Id
+	@GeneratedValue(strategy=GenerationType.AUTO)
 
-	private int id, idSexo;
-	private String nombre, apellido_1, apellido_2, dni, direccion, mail, telefono, colorFavorito;
+	private int id;
+	
+	private int idSexo;
+	
+	
+	@Column(name="apellido1")
+	private String apellido_1;
+	
+	@Column(name="apellido2")
+	private String apellido_2;
+	
+	
+	private String nombre, dni, direccion, mail, telefono, colorFavorito;
 	private byte[] imagen;
 	
 	

@@ -2,7 +2,9 @@ package Principal.views;
 
 import javax.swing.JPanel;
 
+import Principal.controllers.ControladorEstudiantes;
 import Principal.controllers.ControladorMateria;
+import Principal.controllers.ControladorProfesor;
 import Principal.entities.Estudiante;
 import Principal.entities.Materia;
 import Principal.entities.Profesor;
@@ -15,8 +17,11 @@ import javax.swing.JComboBox;
 import java.awt.Insets;
 import java.util.List;
 
+import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JList;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class PanelNotaJPA extends JPanel {
 
@@ -24,6 +29,9 @@ public class PanelNotaJPA extends JPanel {
 	
 	private JList <Estudiante>listSeleccionados;
 	private JList <Estudiante>listNOSeleccionados;
+	private DefaultListModel<Estudiante> listModelNOSeleccionados;
+	private DefaultListModel<Estudiante> listModelSeleccionados ;
+
 	private JComboBox <Materia>jcbMateria;
 	private JComboBox <Profesor>jcbProfesor;
 	private JComboBox <Integer>jcbNota;
@@ -92,6 +100,11 @@ public class PanelNotaJPA extends JPanel {
 		panel.add(jcbNota, gbc_jcbNota);
 		
 		JButton btnActualizarAlumnado = new JButton("Actualizar Alumnado");
+		btnActualizarAlumnado.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				actualizarAlumnado();
+			}
+		});
 		GridBagConstraints gbc_btnActualizarAlumnado = new GridBagConstraints();
 		gbc_btnActualizarAlumnado.gridx = 1;
 		gbc_btnActualizarAlumnado.gridy = 3;
@@ -126,7 +139,7 @@ public class PanelNotaJPA extends JPanel {
 		gbc_lblAlumnosSeleccionados.gridy = 0;
 		panel_2.add(lblAlumnosSeleccionados, gbc_lblAlumnosSeleccionados);
 		
-		 listNOSeleccionados = new JList<Estudiante>();
+		 listNOSeleccionados = new JList(this.getListModelNOSeleccionados());
 		GridBagConstraints gbc_listNOSeleccionados = new GridBagConstraints();
 		gbc_listNOSeleccionados.insets = new Insets(0, 0, 0, 5);
 		gbc_listNOSeleccionados.fill = GridBagConstraints.BOTH;
@@ -150,6 +163,11 @@ public class PanelNotaJPA extends JPanel {
 		panel_3.setLayout(gbl_panel_3);
 		
 		JButton btnPasarTodos = new JButton(">>");
+		btnPasarTodos.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				pasarTodosASeleccionados();
+			}
+		});
 		GridBagConstraints gbc_btnPasarTodos = new GridBagConstraints();
 		gbc_btnPasarTodos.insets = new Insets(0, 0, 5, 5);
 		gbc_btnPasarTodos.gridx = 1;
@@ -171,18 +189,60 @@ public class PanelNotaJPA extends JPanel {
 		panel_3.add(btnQuitar1, gbc_btnQuitar1);
 		
 		JButton btnQuitarTodos = new JButton("<<");
+		btnQuitarTodos.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				quitarTodosDeSeleccionados();
+			}
+		});
 		GridBagConstraints gbc_btnQuitarTodos = new GridBagConstraints();
 		gbc_btnQuitarTodos.insets = new Insets(0, 0, 0, 5);
 		gbc_btnQuitarTodos.gridx = 1;
 		gbc_btnQuitarTodos.gridy = 3;
 		panel_3.add(btnQuitarTodos, gbc_btnQuitarTodos);
 		
-		 listSeleccionados = new JList<Estudiante>();
+		 listSeleccionados = new JList(this.getListModelSeleccionados());
 		GridBagConstraints gbc_listSeleccionados = new GridBagConstraints();
 		gbc_listSeleccionados.fill = GridBagConstraints.BOTH;
 		gbc_listSeleccionados.gridx = 4;
 		gbc_listSeleccionados.gridy = 1;
 		panel_2.add(listSeleccionados, gbc_listSeleccionados);
+		cargarTodasMaterias();
+		cargarTodosProfesores();
+		cargarNotas();
+	}
+	
+	private void pasarTodosASeleccionados() {
+		
+		List<Estudiante> estudiantes = ControladorEstudiantes.getTodos();
+
+		for (Estudiante estudiante : estudiantes) {
+			this.listModelSeleccionados.addElement(estudiante);
+		}
+		
+		this.listModelNOSeleccionados.removeAllElements();
+	}
+	
+	private void quitarTodosDeSeleccionados() {
+	
+		
+		this.listModelSeleccionados.removeAllElements();
+		actualizarAlumnado();
+	}
+	
+	
+	
+	private void cargarNotas() {
+		jcbNota.addItem(Integer.parseInt("0"));
+		jcbNota.addItem(Integer.parseInt("1"));
+		jcbNota.addItem(Integer.parseInt("2"));
+		jcbNota.addItem(Integer.parseInt("3"));
+		jcbNota.addItem(Integer.parseInt("4"));
+		jcbNota.addItem(Integer.parseInt("5"));
+		jcbNota.addItem(Integer.parseInt("6"));
+		jcbNota.addItem(Integer.parseInt("7"));
+		jcbNota.addItem(Integer.parseInt("8"));
+		jcbNota.addItem(Integer.parseInt("9"));
+		jcbNota.addItem(Integer.parseInt("10"));
 
 	}
 	
@@ -193,6 +253,67 @@ public class PanelNotaJPA extends JPanel {
 		}
 
 	}
+	
+	private void cargarTodosProfesores() {
+		List<Profesor> l = ControladorProfesor.getTodos();
+		for (Profesor o : l) {
+			jcbProfesor.addItem(o);
+		}
+
+	}
+	
+	
+	private void actualizarAlumnado(){
+		
+		List<Estudiante> estudiantes = ControladorEstudiantes.getTodos();
+
+		for (Estudiante estudiante : estudiantes) {
+			this.listModelNOSeleccionados.addElement(estudiante);
+		}
+		
+	}
+
+	public DefaultListModel<Estudiante> getListModelNOSeleccionados() {
+		if(this.listNOSeleccionados == null) {
+			this.listModelNOSeleccionados = new DefaultListModel<Estudiante>();
+
+		}
+		return listModelNOSeleccionados;
+	}
+
+
+	public DefaultListModel<Estudiante> getListModelSeleccionados() {
+		if (this.listModelSeleccionados == null) {
+			this.listModelSeleccionados = new DefaultListModel<Estudiante>();
+
+		}
+		return listModelSeleccionados;
+	}
+
+
+	
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 
 }

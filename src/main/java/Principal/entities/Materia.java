@@ -1,11 +1,21 @@
 package Principal.entities;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+@Table(name="materia")
 public class Materia {
 
 	@Override
 	public String toString() {
 		return nombre ;
 	}
+	@Id
+	@GeneratedValue(strategy=GenerationType.AUTO)
 	private int id;
 	private int cursoID;
 	private String nombre;
