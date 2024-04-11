@@ -5,9 +5,11 @@ import javax.swing.JPanel;
 import Principal.controllers.ControladorEstudiantes;
 import Principal.controllers.ControladorMateria;
 import Principal.controllers.ControladorProfesor;
+import Principal.controllers.ControladorValoracionMateria;
 import Principal.entities.Estudiante;
 import Principal.entities.Materia;
 import Principal.entities.Profesor;
+import Principal.entities.ValoracionMateria;
 
 import java.awt.BorderLayout;
 import java.awt.GridBagLayout;
@@ -15,6 +17,7 @@ import javax.swing.JLabel;
 import java.awt.GridBagConstraints;
 import javax.swing.JComboBox;
 import java.awt.Insets;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.DefaultListModel;
@@ -114,6 +117,11 @@ public class PanelNotaJPA extends JPanel {
 		add(panel_1, BorderLayout.SOUTH);
 		
 		JButton btnGuardarNotaAlumnos = new JButton("Guardar Nota Alumnos Seleccionados");
+		btnGuardarNotaAlumnos.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				guardar();
+			}
+		});
 		panel_1.add(btnGuardarNotaAlumnos);
 		
 		JPanel panel_2 = new JPanel();
@@ -175,6 +183,11 @@ public class PanelNotaJPA extends JPanel {
 		panel_3.add(btnPasarTodos, gbc_btnPasarTodos);
 		
 		JButton btnPasar1 = new JButton(">");
+		btnPasar1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				pasarUnoASeleccionado();
+			}
+		});
 		GridBagConstraints gbc_btnPasar1 = new GridBagConstraints();
 		gbc_btnPasar1.insets = new Insets(0, 0, 5, 5);
 		gbc_btnPasar1.gridx = 1;
@@ -182,6 +195,11 @@ public class PanelNotaJPA extends JPanel {
 		panel_3.add(btnPasar1, gbc_btnPasar1);
 		
 		JButton btnQuitar1 = new JButton("<");
+		btnQuitar1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				quitarUnoDeSeleccionado();
+			}
+		});
 		GridBagConstraints gbc_btnQuitar1 = new GridBagConstraints();
 		gbc_btnQuitar1.insets = new Insets(0, 0, 5, 5);
 		gbc_btnQuitar1.gridx = 1;
@@ -209,6 +227,76 @@ public class PanelNotaJPA extends JPanel {
 		cargarTodasMaterias();
 		cargarTodosProfesores();
 		cargarNotas();
+	}
+	
+	
+	private void guardar(){
+	
+		Profesor p = (Profesor) jcbProfesor.getSelectedItem();
+		Materia m = (Materia) jcbMateria.getSelectedItem();
+		List<Estudiante> estudiantes = getEstudiantesSeleccionados();
+		if (estudiantes != null) {
+
+			for (Estudiante estudiante : estudiantes) {
+				ValoracionMateria v = ControladorValoracionMateria.obtenerValoracion(p, estudiante, m);
+				if (v == null) {
+					ControladorValoracionMateria.insert(p, estudiante, m, (Integer)this.jcbNota.getSelectedItem());
+				}
+				else {
+					ControladorValoracionMateria.update(v, (Integer)this.jcbNota.getSelectedItem());
+				}
+			}
+			
+			
+		}
+			
+		
+		
+	}
+	
+	private List<Estudiante> getEstudiantesSeleccionados() {
+		
+		List<Estudiante> l = new ArrayList<Estudiante>();
+		for (int i = 0; i < this.listModelSeleccionados.size(); i++) {
+			Estudiante e = this.listModelSeleccionados.get(i);
+			System.out.println(e.getNombre());
+			l.add(this.listModelSeleccionados.get(i));
+		}
+		
+		return l;
+	}
+	
+	private void pasarUnoASeleccionado() {
+		Estudiante selectedEstudiante = null;
+		int selectedIndex = listNOSeleccionados.getSelectedIndex();
+
+		// Verifica si hay algún elemento seleccionado
+		if (selectedIndex != -1) {
+		    // Obten el objeto correspondiente del DefaultListModel
+		     selectedEstudiante = listModelNOSeleccionados.getElementAt(selectedIndex);
+		    
+		    // Ahora puedes manipular el objeto seleccionado como desees
+		} 
+		
+		listModelSeleccionados.addElement(selectedEstudiante);
+		listModelNOSeleccionados.remove(selectedIndex);
+
+	}
+	private void quitarUnoDeSeleccionado() {
+		Estudiante selectedEstudiante = null;
+		int selectedIndex = listSeleccionados.getSelectedIndex();
+
+		// Verifica si hay algún elemento seleccionado
+		if (selectedIndex != -1) {
+		    // Obten el objeto correspondiente del DefaultListModel
+		     selectedEstudiante = listModelSeleccionados.getElementAt(selectedIndex);
+		    
+		    // Ahora puedes manipular el objeto seleccionado como desees
+		} 
+		
+		listModelNOSeleccionados.addElement(selectedEstudiante);
+		listModelSeleccionados.remove(selectedIndex);
+
 	}
 	
 	private void pasarTodosASeleccionados() {

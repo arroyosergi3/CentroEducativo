@@ -1,10 +1,20 @@
 package Principal.entities;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "valoracionmateria")
 public class ValoracionMateria {
 
 
-	
-	private int id, idProfesor, idMateria, idEstudiante;
+	@Id
+	@GeneratedValue (strategy = GenerationType.AUTO)
+	private int id;
+	private int idProfesor, idMateria, idEstudiante;
 	private float valoracion;
 
 	public int getId() {

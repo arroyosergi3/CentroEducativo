@@ -5,110 +5,70 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import capitulo08.centroEducativo.entidades.Curso;
-import capitulo08.centroEducativo.entidades.ValoracionMateria;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.EntityTransaction;
+import javax.persistence.Persistence;
+import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 
-public class ControladorValoracionMateria extends SuperControlador {
+import Principal.entities.Estudiante;
+import Principal.entities.Materia;
+import Principal.entities.Profesor;
+import Principal.entities.ValoracionMateria;
+
+
+public class ControladorValoracionMateria {
 
 	private static String nombreTabla = "valoracionmateria";
+	private static EntityManager em =  Persistence.createEntityManagerFactory("CentroEducativo").createEntityManager();
 
 	
 
-	
-	
-	public static ValoracionMateria findByIdMateriaAndIdProfesorAndIdEstudiante (int idMateria, int idProfesor, int idEstudiante){
-		ValoracionMateria v = null;
-		try {
-			PreparedStatement ps =  ConnectionManager.getConexion().prepareStatement("select * from " + nombreTabla + " where idProfesor = ? and idMateria=? and idEstudiante=? limit 1");
-			ps.setInt(1, idProfesor);
-			ps.setInt(2, idMateria);
-			ps.setInt(3, idEstudiante);
-			
-			ResultSet rs = ps.executeQuery();
-			
-			if (rs.next()) {
-				v = getEntidadFromResulSet(rs);
-			}
-			
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+	public static ValoracionMateria obtenerValoracion(Profesor p, Estudiante e, Materia m ) {
+
+		TypedQuery<ValoracionMateria> q = 
+				em.createQuery("SELECT v FROM " + nombreTabla + " v  where v.profesor.id = "+  String.valueOf(p.getId()) + " and v.materia.id =  " + String.valueOf(m.getId()) + " and v.estudiante.id = " + String.valueOf(e.getId()) , ValoracionMateria.class);
+		ValoracionMateria valoracionQuery = (ValoracionMateria) q.getSingleResult();
+		
+		if (valoracionQuery != null) {
+			return valoracionQuery;
 		}
-		
-		
-		
-		return v;
-	}
-	
-	
-	
-	
-	
-	private static ValoracionMateria getEntidadFromResulSet(ResultSet rs) throws SQLException {
-		
-		ValoracionMateria o = new ValoracionMateria();
-
-		o.setId(rs.getInt("id"));
-		o.setIdEstudiante(rs.getInt("idEstudiante"));
-		o.setIdMateria(rs.getInt("idMateria"));
-		o.setIdProfesor(rs.getInt("idProfesor"));
-		o.setValoracion(rs.getFloat("valoracion"));
-		
-		return o;
-	}
-	
-
-	
-	
-	public static void insercion (ValoracionMateria o, Connection conn) {
-		int nuevoId = SuperControlador.maxIdEnTabla(nombreTabla);
-		if (o != null) {
-			try {
-				PreparedStatement ps = conn.prepareStatement(""+ "insert into " + nombreTabla + "(id, idProfesor, idEstudiante, idMateria, valoracion) "
-			+ "values (?, ?, ? , ? , ?)");
-				ps.setInt(1, nuevoId);
-				ps.setInt(2, o.getIdProfesor());
-				ps.setInt(3, o.getIdEstudiante());
-				ps.setInt(4, o.getIdMateria());
-				ps.setFloat(5, o.getValoracion());
-				ps.executeQuery();
-				
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-
-	}
-	
-	
-	
-	public static void modificacion (ValoracionMateria  o, Connection conn) {
-		if (o != null) {
-			try {
-				
-				PreparedStatement ps = conn.prepareStatement(""+ "update " + nombreTabla + " set valoracion=? where  idProfesor = ? and idEstudiante=? and idMateria=?");
-				ps.setFloat(1, o.getValoracion());
-				ps.setInt(2, o.getIdProfesor());
-				ps.setInt(3, o.getIdEstudiante());
-				ps.setInt(4, o.getIdMateria());
-
-				ps.execute();
-				
-				
-				
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-		
+		return null;
 		
 	}
 	
+//	public static void insert(Profesor p, Estudiante e, Materia m, Integer valoracion ) {
+//		
+//		Query q = em.createNativeQuery("insert into " + nombreTabla + "(idProfesor, idEstudiante, idMateria, valoracion) values (" + p.getId() + ", " + e.getId() +" , " + m.getId() + " , "+ valoracion + ")");
+//		q.executeUpdate();
+//		
+//	}
+	
+	public static void insert(Profesor p, Estudiante e, Materia m, Integer valoracion) {
+	    EntityTransaction tx = em.getTransaction();
+	    try {
+	        tx.begin();
+	        Query q = em.createNativeQuery("INSERT INTO " + nombreTabla + "(idProfesor, idEstudiante, idMateria, valoracion) VALUES (?, ?, ?, ?)");
+	        q.setParameter(1, p.getId());
+	        q.setParameter(2, e.getId());
+	        q.setParameter(3, m.getId());
+	        q.setParameter(4, valoracion);
+	        q.executeUpdate();
+	        tx.commit();
+	    } catch (Exception ex) {
+	        if (tx != null && tx.isActive()) {
+	            tx.rollback();
+	        }
+	        ex.printStackTrace(); // Manejo adecuado de la excepción, puedes cambiar esto según tus necesidades
+	    }
+	}
 
-	
-	
+
+	public static void update(ValoracionMateria v, Integer valoracion) {
+		Query q = em.createNativeQuery("update " + nombreTabla + " set valoracion = " + valoracion + " where id = " + String.valueOf(v.getId()));
+		q.executeUpdate();
+	}
 	
 	
 	
