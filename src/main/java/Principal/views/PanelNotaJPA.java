@@ -6,6 +6,7 @@ import Principal.controllers.ControladorEstudiantes;
 import Principal.controllers.ControladorMateria;
 import Principal.controllers.ControladorProfesor;
 import Principal.controllers.ControladorValoracionMateria;
+import Principal.controllers.SuperControlador;
 import Principal.entities.Estudiante;
 import Principal.entities.Materia;
 import Principal.entities.Profesor;
@@ -232,24 +233,23 @@ public class PanelNotaJPA extends JPanel {
 	
 	private void guardar(){
 	
-		Profesor p = (Profesor) jcbProfesor.getSelectedItem();
-		Materia m = (Materia) jcbMateria.getSelectedItem();
+
 		List<Estudiante> estudiantes = getEstudiantesSeleccionados();
 		if (estudiantes != null) {
 
 			for (Estudiante estudiante : estudiantes) {
-				ValoracionMateria v = ControladorValoracionMateria.obtenerValoracion(p, estudiante, m);
-				if (v == null) {
-					ControladorValoracionMateria.insert(p, estudiante, m, (Integer)this.jcbNota.getSelectedItem());
+				
+				if (SuperControlador.obtenerValoracionSinNota(estudiante, (Profesor)this.jcbProfesor.getSelectedItem(), (Materia)this.jcbMateria.getSelectedItem()) == null) {
+					ControladorValoracionMateria.insert(estudiante, (Profesor)this.jcbProfesor.getSelectedItem(), (Materia)this.jcbMateria.getSelectedItem(), (Integer)this.jcbNota.getSelectedItem());
 				}
 				else {
-					ControladorValoracionMateria.update(v, (Integer)this.jcbNota.getSelectedItem());
+					ControladorValoracionMateria.update(estudiante, (Profesor)this.jcbProfesor.getSelectedItem(), (Materia)this.jcbMateria.getSelectedItem(), (Integer)this.jcbNota.getSelectedItem());;
 				}
 			}
 			
 			
 		}
-			
+
 		
 		
 	}
@@ -301,7 +301,7 @@ public class PanelNotaJPA extends JPanel {
 	
 	private void pasarTodosASeleccionados() {
 		
-		List<Estudiante> estudiantes = ControladorEstudiantes.getTodos();
+		List<Estudiante> estudiantes = (List<Estudiante>) ControladorEstudiantes.getInstance().findAll();
 
 		for (Estudiante estudiante : estudiantes) {
 			this.listModelSeleccionados.addElement(estudiante);
@@ -335,7 +335,7 @@ public class PanelNotaJPA extends JPanel {
 	}
 	
 	private void cargarTodasMaterias() {
-		List<Materia> l = ControladorMateria.getTodos();
+		List<Materia> l = (List<Materia>) new ControladorMateria().getInstance().findAll();
 		for (Materia o : l) {
 			jcbMateria.addItem(o);
 		}
@@ -343,7 +343,7 @@ public class PanelNotaJPA extends JPanel {
 	}
 	
 	private void cargarTodosProfesores() {
-		List<Profesor> l = ControladorProfesor.getTodos();
+		List<Profesor> l = (List<Profesor>) new ControladorProfesor().getInstance().findAll();
 		for (Profesor o : l) {
 			jcbProfesor.addItem(o);
 		}
@@ -352,11 +352,19 @@ public class PanelNotaJPA extends JPanel {
 	
 	
 	private void actualizarAlumnado(){
+		this.listModelNOSeleccionados.clear();
+		this.listModelSeleccionados.clear();
 		
-		List<Estudiante> estudiantes = ControladorEstudiantes.getTodos();
+		List<Estudiante> estudiantes = (List<Estudiante>) ControladorEstudiantes.getInstance().findAll();
 
 		for (Estudiante estudiante : estudiantes) {
-			this.listModelNOSeleccionados.addElement(estudiante);
+			if (SuperControlador.obtenerValoracion(estudiante, (Profesor)this.jcbProfesor.getSelectedItem(), (Materia)this.jcbMateria.getSelectedItem(), (Integer)this.jcbNota.getSelectedItem() ) != null) {
+				this.listModelSeleccionados.addElement(estudiante);
+			}
+			else {
+				this.listModelNOSeleccionados.addElement(estudiante);
+
+			}
 		}
 		
 	}

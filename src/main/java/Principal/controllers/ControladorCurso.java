@@ -17,6 +17,12 @@ import Principal.entities.Curso;
 
 public class ControladorCurso extends SuperControlador {
 	
+	public ControladorCurso(String nombreTabla, Class tipoEntidad) {
+		super(nombreTabla, tipoEntidad);
+		// TODO Auto-generated constructor stub
+	}
+
+
 	private static EntityManager em =  Persistence.createEntityManagerFactory("CentroEducativo").createEntityManager();
 	
 	private static String nombreTabla = "curso";
@@ -65,60 +71,12 @@ public class ControladorCurso extends SuperControlador {
 	public static List<Curso> getTodos(){
 		List<Curso> l = new ArrayList<Curso>();
 		
-		
-		
+
 		
 		return l;
 	}
 
 	
-	public static int insercion (Curso o, Connection conn) {
-		int nuevoId = SuperControlador.maxIdEnTabla("curso");
-		try {
-			PreparedStatement ps = conn.prepareStatement(""+ "insert into curso (id, descripcion) "
-		+ "values (?, ?)");
-			ps.setInt(1, nuevoId);
-			ps.setString(2, o.getDescripcion());
-
-			ps.execute();
-			return nuevoId;
-			
-			
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return -1;
-	}
-	
-	
-	
-	public static void modificacion (Curso  o, Connection conn) {
-		try {
-			PreparedStatement ps = conn.prepareStatement(""+ "update curso set descripcion=? where id=?");
-			ps.setString(1, o.getDescripcion());
-			ps.setInt(2, o.getId());
-			ps.execute();
-			
-			
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-	
-	
-	public static void eliminacion (int id, Connection conn) {
-		try {
-			PreparedStatement ps = conn.prepareStatement(""
-					+ "delete from curso where id = ?");
-			ps.setInt(1, id);
-			
-			ps.executeUpdate();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-	}
 	
 	
 	

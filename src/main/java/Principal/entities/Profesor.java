@@ -9,7 +9,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name="profesor")
-public class Profesor {
+public class Profesor extends Entidad{
 	@Override
 	public String toString() {
 		return ( nombre + " "+ apellido_1 + " " + apellido_2 );

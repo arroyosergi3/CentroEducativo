@@ -1,7 +1,16 @@
 package Principal.entities;
 
-public class Curso {
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
+@Entity
+@Table(name = "curso")
+public class Curso extends Entidad{
+	@Id
+	@GeneratedValue (strategy = GenerationType.AUTO)
 	private int id;
 	private String descripcion;
 	

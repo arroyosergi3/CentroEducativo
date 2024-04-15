@@ -8,7 +8,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name="materia")
-public class Materia {
+public class Materia  extends Entidad{
 
 	@Override
 	public String toString() {
@@ -51,6 +51,7 @@ public class Materia {
 	public void setAcronimo(String acronimo) {
 		this.acronimo = acronimo;
 	}
+
 	
 	
 	

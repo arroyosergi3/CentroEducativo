@@ -8,7 +8,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "valoracionmateria")
-public class ValoracionMateria {
+public class ValoracionMateria extends Entidad {
 
 
 	@Id
@@ -56,6 +56,7 @@ public class ValoracionMateria {
 	public void setValoracion(float valoracion) {
 		this.valoracion = valoracion;
 	}
+
 
 	
 	

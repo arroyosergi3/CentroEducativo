@@ -13,25 +13,22 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.persistence.Query;
 
+import Principal.entities.Materia;
 import Principal.entities.Profesor;
 
 
-public class ControladorProfesor {
-	private static String nombreTabla = "profesor";
-	private static EntityManager em =  Persistence.createEntityManagerFactory("CentroEducativo").createEntityManager();
+public class ControladorProfesor extends SuperControlador{
+	private static ControladorProfesor instance = null;
 
-	
-	
-	
-	public static List<Profesor> getTodos () {
-		
-		
-		Query q = em.createNativeQuery("SELECT * FROM " + nombreTabla + ";", Profesor.class);
-		
-		List<Profesor> materias = (List<Profesor>) q.getResultList();
-		
-		return materias;
-		
+	public ControladorProfesor() {
+		super("profesor", Profesor.class);
+	}
+
+	public static ControladorProfesor getInstance() {
+		if (instance == null) {
+			instance = new ControladorProfesor();
+		}
+		return instance;
 	}
 	
 	

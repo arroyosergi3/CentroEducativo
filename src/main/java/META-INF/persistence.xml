@@ -8,6 +8,7 @@
 		<class>Principal.entities.Profesor</class>
 		<class>Principal.entities.Sexo</class>
 		<class>Principal.entities.ValoracionMateria</class>
+		<class>Principal.entities.Entidad</class>
 
 
 		<properties>

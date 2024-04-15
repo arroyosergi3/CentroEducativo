@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.persistence.Query;
 
@@ -17,26 +18,22 @@ import Principal.entities.Materia;
 
 
 
-public class ControladorEstudiantes {
-
-	private static String nombreTabla = "estudiante";
-	private static EntityManager em =  Persistence.createEntityManagerFactory("CentroEducativo").createEntityManager();
-
+public class ControladorEstudiantes extends SuperControlador {
+	private static ControladorEstudiantes instance = null;
 	
-
-	public static List<Estudiante> getTodos () {
-		
-		
-		Query q = em.createNativeQuery("SELECT * FROM " + nombreTabla + ";", Estudiante.class);
-		
-		List<Estudiante> materias = (List<Estudiante>) q.getResultList();
-		
-		return materias;
-		
+	public ControladorEstudiantes() {
+		super("estudiante", Estudiante.class);
+		// TODO Auto-generated constructor stub
+	}
+	
+	public static ControladorEstudiantes getInstance() {
+		if (instance == null) {
+			instance = new ControladorEstudiantes();
+		}
+		return instance;
 	}
 	
 
-	
 	
 	
 	
