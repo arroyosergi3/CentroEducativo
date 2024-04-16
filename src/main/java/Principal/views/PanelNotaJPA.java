@@ -283,6 +283,9 @@ public class PanelNotaJPA extends JPanel {
 		
 		return this.jftfFecha;
 	}
+	
+	
+	
 	private void guardar(){
 	
 

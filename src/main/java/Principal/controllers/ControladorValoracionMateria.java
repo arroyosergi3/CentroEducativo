@@ -22,14 +22,6 @@ public class ControladorValoracionMateria extends SuperControlador{
 
 	public ControladorValoracionMateria() {
 		super("valoracionmateria", ValoracionMateria.class);
-	}
-
-
-	
-	
-	
-	
-	
-	
+	}	
 
 }
