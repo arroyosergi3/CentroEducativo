@@ -4,11 +4,8 @@ import javax.swing.JPanel;
 import java.awt.BorderLayout;
 import javax.swing.JToolBar;
 
-import capitulo08.centroEducativo.controladores.ConnectionManager;
-import capitulo08.centroEducativo.controladores.ControladorCurso;
-import capitulo08.centroEducativo.entidades.Curso;
-
-
+import Principal.controllers.ControladorCurso;
+import Principal.entities.Curso;
 
 import java.awt.GridBagLayout;
 import javax.swing.JLabel;

@@ -1,5 +1,7 @@
 package Principal.entities;
 
+import java.util.Date;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -16,6 +18,17 @@ public class ValoracionMateria extends Entidad {
 	private int id;
 	private int idProfesor, idMateria, idEstudiante;
 	private float valoracion;
+	
+	private Date fecha;
+	
+
+	public Date getFecha() {
+		return fecha;
+	}
+
+	public void setFecha(Date fecha) {
+		this.fecha = fecha;
+	}
 
 	public int getId() {
 		return id;

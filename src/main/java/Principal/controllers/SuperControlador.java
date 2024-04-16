@@ -1,5 +1,6 @@
 package Principal.controllers;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -36,6 +37,8 @@ public class SuperControlador {
 				.createNativeQuery("SELECT * FROM " + nombreTabla + ";", this.tipoEntidad).getResultList();
 
 	}
+	
+	
 
 	protected static EntityManager getEntityManager() {
 		if (em == null) {
@@ -58,12 +61,13 @@ public class SuperControlador {
 	}
 	
 	
-	public static void insert(Estudiante e, Profesor p, Materia m, Integer nota) {
+	public static void insert(Estudiante e, Profesor p, Materia m, Integer nota, Date fehca) {
 		ValoracionMateria v = new ValoracionMateria();
 		v.setIdEstudiante(e.getId());
 		v.setIdMateria(m.getId());
 		v.setIdProfesor(p.getId());
 		v.setValoracion(nota);
+		v.setFecha(fehca);
 		
 		
 		em.getTransaction().begin();
@@ -73,10 +77,11 @@ public class SuperControlador {
 	}
 	
 	
-	public static void update(Estudiante e, Profesor p, Materia m, Integer nota) {
+	public static void update(Estudiante e, Profesor p, Materia m, Integer nota, Date fecha) {
 		ValoracionMateria v = obtenerValoracionSinNota(e, p, m);
 		
 		v.setValoracion(nota);
+		v.setFecha(fecha);
 		
 		em.getTransaction().begin();
 		em.persist(v);

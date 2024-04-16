@@ -3,10 +3,8 @@ package Principal.views;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
-import capitulo08.centroEducativo.controladores.ConnectionManager;
-
-import capitulo08.centroEducativo.controladores.ControladorEstudiantes;
-import capitulo08.centroEducativo.entidades.Estudiante;
+import Principal.controllers.ControladorEstudiantes;
+import Principal.entities.Estudiante;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -110,7 +108,7 @@ public class PanelEstudiante extends JPanel {
 		// que obtiene un objeto de tipo estudiante y que lo envía para ser
 		// mostrado
 		Estudiante mockEstudiante = new Estudiante();
-		mockEstudiante = ControladorEstudiantes.getPrimero();
+		mockEstudiante = (Estudiante) ControladorEstudiantes.getPrimero();
 		mostrarEntidad(mockEstudiante);
 	}
 
